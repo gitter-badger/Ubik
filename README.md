@@ -4,12 +4,10 @@ Since the day I was retrieved from the grave, I have grown younger each day. I a
 # Usage
 
 The bot is live here:
-https://www.messenger.com/t/bibtexBro
+[Facebook Page](https://www.messenger.com/t/ubikbot) - https://www.messenger.com/t/ubikbot
 
 The bot page is:
-https://www.facebook.com/bibtexBro/
-
-Go Crazy!!
+[Messanger](https://www.facebook.com/ubikbot/) - https://www.facebook.com/ubikbot/
 
 # TODO
 
@@ -42,3 +40,4 @@ Go Crazy!!
   - [ ] Urban Dictionary
 - [ ] Current Stock Trend of a stock
 - [ ] Trending News
+- [ ] Help to guide people with interacting with Ubik
