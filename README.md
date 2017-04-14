@@ -4,10 +4,10 @@ Since the day I was retrieved from the grave, I have grown younger each day. I a
 # Usage
 
 The bot is live here:
-[Facebook Page](https://www.messenger.com/t/ubikbot) - https://www.messenger.com/t/ubikbot
+[Messanger](https://www.messenger.com/t/ubikbot)
 
 The bot page is:
-[Messanger](https://www.facebook.com/ubikbot/) - https://www.facebook.com/ubikbot/
+[Facebook Page](https://www.facebook.com/ubikbot/)
 
 # TODO
 
