@@ -1,3 +1,11 @@
+# ignore config file
+config.py
+
+# ignore server io
+ngrok
+
+# ignore virtualenv directory
+ubik/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

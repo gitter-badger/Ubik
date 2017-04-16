@@ -1,5 +1,9 @@
 # Ubik
-Since the day I was retrieved from the grave, I have grown younger each day. I am going to help you get younger, by stressing out less. You can ask me anything in the usage chart below, and I will come help you. Don't worry. I will do the math, while you grab your cup of delicious blood. Ohh! sorry you go get coffee. Umm, habits. When will i lose my zombie behavior ? Wan't to know ? Go ask me.
+Since the day I was retrieved from the grave, I have grown younger each day. As I grow younger, I want to learn. I have so many questions, that I need answered. I am sure, you have questions too. That is why my job is to fetch you answers from the best. You can ask any question you like, and we will get experts to work hard and get you your answer. "I am being very helpful", you say. But, I am doing this for myself. I will learn myself, to an extent, that I can reach an extent of knowledge, that I can help you myself.
+
+Don't worry about the quality of content. You can vote on the satisfaction of response, and you get responses from only those, who consistently get upvoted. There is perfect anonymity as well. The inquirer does not know who answered the question, and neither the people who answer the question, knows who asked the question in first place. This is first ever Anonymous Question Answering Engine.
+
+Don't be scared about misusage of the platform. I will screen all questions and answers, and only let the genuine ones pass. Because, what good am I as an AI helper, if I can't do that for you. But Yes, I need your brain. I am a zombie too, you know.
 
 # Usage
 
@@ -11,33 +15,15 @@ The bot page is:
 
 # TODO
 
-## Research Focussed
-- [ ] Find submission deadline of research papers in Publications and Conference
-- [ ] Obtain citation of the paper in format asked for
-- [ ] Obtain most relevant reference papers, and links  
-- [ ] Get the link of the paper
-- [ ] Get the overleaf link of the desired template of the paper
-- [ ] Store research area interests of users
-- [ ] Give users, one paper each day in their relevant area.
-- [ ] Access papers by name of authors and year of publication
-
-## Conversation Focussed
-- [ ] One motivation quote each morning.
-  - [ ] Automatic
-  - [ ] On Request
-- [ ] 2 xkcd articles each day (Afternoon + Evening)
-  - [ ] Automatic
-  - [ ] On Request
-- [ ] Question Answering based on NLP
-- [ ] Joke on demand
-- [ ] Simple rule based response
-- [ ] Set a reminder, and remind
-
-## Information Focussed
-- [ ] Weather
-- [ ] Definition of Words
-  - [ ] Normal Dictionary
-  - [ ] Urban Dictionary
-- [ ] Current Stock Trend of a stock
-- [ ] Trending News
-- [ ] Help to guide people with interacting with Ubik
+- [x] Create the server "ubik.py"
+- [x] Create a database backend
+- [x] Store question and answer in the database
+- [ ] Send a less answered question, to users asking for their response.
+- [ ] Send the stored response to the question to the person who asked the question
+- [ ] Find duplicate question, and only store unique ones.
+- [ ] Add feedback functionality to the response of users.
+- [ ] Add rank to the users. Promoting responses of users with most upvotes.
+  - [ ] Try making it probabilistic.
+- [ ] Give each user, its statistics, like:
+  - [ ] Let a user know, what is their trust factor
+  - [ ] Let a user know, where they rank w.r.t. other users who answer questions.
