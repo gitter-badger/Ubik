@@ -26,6 +26,6 @@ The bot page is:
 - [x] Add feedback functionality to the response of users.
 - [ ] Add rank to the users. Promoting responses of users with most upvotes.
   - [ ] Try making it probabilistic.
-- [ ] Give each user, its statistics, like:
-  - [ ] Let a user know, what is their karma score.
-  - [ ] Let a user know, where they rank w.r.t. other users who answer questions.
+- [x] Give each user, its statistics, like:
+  - [x] Let a user know, what is their karma score.
+  - [x] Let a user know, where they rank w.r.t. other users who answer questions.
