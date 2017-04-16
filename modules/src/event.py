@@ -22,37 +22,31 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import psycopg2
-from utils.log import *
 
-
-class Database:
-    def __init__(self, dbname, dbuser, dbpass):
+class Event:
+    def __init__(self, db, question_handler, answer_handler, user_handler):
         """
 
-        :param dbname:
-        :param dbuser:
-        :param dbpass:
+        :param db:
+        :param question_handler:
+        :param answer_handler:
+        :param user_handler:
         """
-        self.conn = None
-        try:
-            self.conn=psycopg2.connect(
-                "dbname='{0}' user='{1}' host='localhost' password='{2}'".
-                format(dbname, dbuser, dbpass))
-            self.conn.autocommit = True
-        except:
-            log("I am unable to connect to the database.")
+        self.db = db
+        self.question_handler = question_handler
+        self.answer_handler = answer_handler
+        self.user_handler = user_handler
 
-    def connected(self):
+    def new_question(self):
         """
 
         :return:
         """
-        return self.conn is not None
+        pass
 
-    def get_cursor(self):
+    def new_answer(self):
         """
 
         :return:
         """
-        return self.conn.cursor()
+        pass

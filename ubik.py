@@ -1,14 +1,38 @@
+"""
+MIT License
+
+Copyright (c) 2017 Harshal Priyadarshi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 import config
 from flask import Flask, request
 import json
 import os
 import requests
-import modules
 from utils.log import *
 from db import Database
 from modules.src.question import Question
 from modules.src.answer import Answer
 from modules.src.user import User
+from modules.src.event import Event
 
 ACCESS_TOKEN = os.environ.get('ACCESS_TOKEN', config.ACCESS_TOKEN)
 VERIFY_TOKEN = os.environ.get('VERIFY_TOKEN', config.VERIFY_TOKEN)
@@ -21,19 +45,29 @@ db = Database(DATABASE_NAME, DATABASE_USER, DATABASE_PASS)
 question_handler = Question(db)
 answer_handler = Answer(db)
 user_handler = User(db)
+event_handler = Event(db, question_handler, answer_handler, user_handler)
 
 
 @app.route('/')
 def info():
+    """
+
+    :return:
+    """
     return "Hi! I am Ubik. I will get the best people to answer your questions." \
         " Ask anything sensible. Also please don't include any personal details." \
         " This is an anonymous Q&A platform, built on confidence. " \
         "If you ask indecent questions, you will lose right to ask. " \
         "Similar rules apply for those who answer questions. But don't worry, I am there for you." \
-         " Ohh! I forgot to tell you, I rose from dead."
+        " Ohh! I forgot to tell you, I rose from dead."
+
 
 @app.route('/webhook/', methods=['GET', 'POST'])
 def webhook():
+    """
+
+    :return:
+    """
     if request.method == 'POST':
         data = request.get_json(force=True)
         log(data)  # you may not want to log every incoming message in production, but it's good for testing
@@ -62,7 +96,14 @@ def webhook():
         else:
             return 'Error, wrong validation token', 403
 
+
 def send_message(recipient_id, message_text):
+    """
+
+    :param recipient_id:
+    :param message_text:
+    :return:
+    """
     log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
     params = {
         "access_token": ACCESS_TOKEN
@@ -83,7 +124,14 @@ def send_message(recipient_id, message_text):
         log(r.status_code)
         log(r.text)
 
+
 def handle_message(message_text, sender_id):
+    """
+
+    :param message_text:
+    :param sender_id:
+    :return:
+    """
     if message_text.startswith('[Question]'):
         question_handler.add_question(message_text, sender_id)
         response_text = question_handler.fetch_response()
