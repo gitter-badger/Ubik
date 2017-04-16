@@ -27,7 +27,7 @@ from flask import Flask, request
 import os
 from utils.log import *
 from utils.reply import send_message
-from db import Database
+from modules.src.db import Database
 from modules.src.question import Question
 from modules.src.answer import Answer
 from modules.src.user import User

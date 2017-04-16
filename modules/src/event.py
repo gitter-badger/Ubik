@@ -103,6 +103,9 @@ class Event:
         """
         pass
 
+    def post_feedback(self, feedback_type):
+        pass
+
     '''
     def remind_to_answer(self):
         """
