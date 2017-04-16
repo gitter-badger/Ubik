@@ -23,6 +23,7 @@ SOFTWARE.
 
 """
 from utils.log import log
+from utils.mathematics import percentile
 
 class User:
     def __init__(self, db, event_handler):
@@ -58,3 +59,17 @@ class User:
 
     def karma_updated(self):
         return self.stored_karma
+
+    def get_user_statistics(self, user_id):
+        try:
+            self.cur.execute("SELECT karma from users WHERE user_id=%s;", (user_id,))
+            karma = int(self.cur.fetchone()[0])
+            self.cur.execute("SELECT karma from users;")
+            all_karmas = [x[0] for x in self.cur.fetchall()]
+            percentile_standing = percentile(karma, all_karmas)
+            if percentile_standing == -1:
+                return "You need to ask at least one question, to be rated."
+            else:
+                return "Your karma score is:{0}\nYour karma score is above {1} percent of other users".format(karma, percentile_standing)
+        except:
+            return "Dang, our servers crashed. Lolzz. Finally something more than my brain can explode. Delicious tiny brain."

@@ -113,6 +113,8 @@ def handle_message(payload, sender_id, type="non-feedback"):
         elif payload.startswith('[Answer]'):
             answer_handler.add_answer(payload, sender_id)
             response_text = answer_handler.fetch_response()
+        elif payload == '[Statistics]':
+            response_text = user_handler.get_user_statistics(sender_id)
         else:
             response_text = "Hi, I am Ubik. You can ask me your question."
     elif type == "feedback":

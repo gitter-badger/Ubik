@@ -51,7 +51,7 @@ class Event:
         """
         self.cur.execute("SELECT asker_id, question FROM question WHERE question_id=%s;", (question_id,))
         asker_id, question = self.cur.fetchone()
-        self.cur.execute("SELECT DISTINCT user_id FROM users WHERE user_id != %s;", (asker_id,))
+        self.cur.execute("SELECT user_id FROM users WHERE user_id != %s;", (asker_id,))
         non_askers = [x[0] for x in self.cur.fetchall()]
         if not non_askers:
             return

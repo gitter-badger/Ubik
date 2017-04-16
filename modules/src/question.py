@@ -47,7 +47,7 @@ class Question:
             self.cur.execute("INSERT INTO question (question, asker_id, has_answer) VALUES (%s, %s, %s) RETURNING question_id;",
                              (question, str(sender_id), False))
             question_id = self.cur.fetchone()[0]
-            self.cur.execute("INSERT INTO users (user_id) VALUES (%s);", (str(sender_id),))
+            self.cur.execute("INSERT INTO users (user_id) SELECT (%s) WHERE NOT EXISTS (SELECT * FROM users WHERE user_id=%s);", (str(sender_id),str(sender_id)))
             self.event_handler.new_question(question_id)
         except:
             self.stored_question = False

@@ -50,7 +50,7 @@ class Answer:
             # stores present answer
             self.cur.execute("INSERT INTO answer (answer, responder_id, question_id) VALUES (%s, %s, %s);",
                              (answer, sender_id, question_id))
-            self.cur.execute("INSERT INTO users (user_id) VALUES (%s);", (str(sender_id),))
+            self.cur.execute("INSERT INTO users (user_id) SELECT (%s) WHERE NOT EXISTS (SELECT * FROM users WHERE user_id=%s);", (str(sender_id),str(sender_id)))
             self.event_handler.new_answer(question_id, answer, sender_id)
         else:
             self.stored_answer = False
