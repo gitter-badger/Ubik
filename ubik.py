@@ -24,17 +24,15 @@ SOFTWARE.
 
 import config
 from flask import Flask, request
-import json
 import os
-import requests
 from utils.log import *
+from utils.reply import send_message
 from db import Database
 from modules.src.question import Question
 from modules.src.answer import Answer
 from modules.src.user import User
 from modules.src.event import Event
 
-ACCESS_TOKEN = os.environ.get('ACCESS_TOKEN', config.ACCESS_TOKEN)
 VERIFY_TOKEN = os.environ.get('VERIFY_TOKEN', config.VERIFY_TOKEN)
 DATABASE_NAME = os.environ.get('DATABASE_NAME', config.DATABASE_NAME)
 DATABASE_USER = os.environ.get('DATABASE_USER', config.DATABASE_USER)
@@ -42,10 +40,11 @@ DATABASE_PASS = os.environ.get('DATABASE_PASS', config.DATABASE_PASS)
 
 app = Flask(__name__)
 db = Database(DATABASE_NAME, DATABASE_USER, DATABASE_PASS)
-question_handler = Question(db)
-answer_handler = Answer(db)
-user_handler = User(db)
-event_handler = Event(db, question_handler, answer_handler, user_handler)
+event_handler = Event(db)
+question_handler = Question(db, event_handler)
+answer_handler = Answer(db, event_handler)
+user_handler = User(db, event_handler)
+
 
 
 @app.route('/')
@@ -95,34 +94,6 @@ def webhook():
             return request.args.get('hub.challenge'), 200
         else:
             return 'Error, wrong validation token', 403
-
-
-def send_message(recipient_id, message_text):
-    """
-
-    :param recipient_id:
-    :param message_text:
-    :return:
-    """
-    log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
-    params = {
-        "access_token": ACCESS_TOKEN
-    }
-    headers = {
-        "Content-Type": "application/json"
-    }
-    data = json.dumps({
-        "recipient": {
-            "id": recipient_id
-        },
-        "message": {
-            "text": message_text
-        }
-    })
-    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
-    if r.status_code != 200:
-        log(r.status_code)
-        log(r.text)
 
 
 def handle_message(message_text, sender_id):

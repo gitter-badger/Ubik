@@ -18,8 +18,9 @@ The bot page is:
 - [x] Create the server "ubik.py"
 - [x] Create a database backend
 - [x] Store question and answer in the database
+- [x] Add Question Answer interface. Create the link
 - [ ] Send a less answered question, to users asking for their response.
-- [ ] Send the stored response to the question to the person who asked the question
+- [x] Send the stored response to the question to the person who asked the question
 - [ ] Find duplicate question, and only store unique ones.
 - [ ] Add feedback functionality to the response of users.
 - [ ] Add rank to the users. Promoting responses of users with most upvotes.

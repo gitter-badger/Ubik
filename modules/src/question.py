@@ -21,16 +21,18 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
+from utils.log import log
 
 
 class Question:
-    def __init__(self, db):
+    def __init__(self, db, event_handler):
         """
 
         :param db:
         """
         self.db = db
         self.cur = db.get_cursor()
+        self.event_handler = event_handler
         self.stored_question = True
 
     def add_question(self, text, sender_id):
@@ -42,8 +44,11 @@ class Question:
         """
         question = text.split('[Question]')[1].strip()
         try:
-            self.cur.execute("INSERT INTO question (question, asker_id, has_answer) VALUES (%s, %s, %s)",
+            self.cur.execute("INSERT INTO question (question, asker_id, has_answer) VALUES (%s, %s, %s) RETURNING question_id;",
                              (question, str(sender_id), False))
+            question_id = self.cur.fetchone()[0]
+            self.cur.execute("INSERT INTO users (user_id) VALUES (%s);", (str(sender_id),))
+            self.event_handler.new_question(question_id)
         except:
             self.stored_question = False
 

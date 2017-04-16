@@ -24,9 +24,10 @@ SOFTWARE.
 
 
 class User:
-    def __init__(self, db):
+    def __init__(self, db, event_handler):
         """
 
         :param db:
         """
         self.db = db
+        self.event_handler = event_handler

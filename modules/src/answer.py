@@ -26,13 +26,14 @@ import re
 
 
 class Answer:
-    def __init__(self, db):
+    def __init__(self, db, event_handler):
         """
 
         :param db:
         """
         self.db = db
         self.cur = db.get_cursor()
+        self.event_handler = event_handler
         self.stored_answer = True
 
     def add_answer(self, text, sender_id):
@@ -47,8 +48,10 @@ class Answer:
         if m is not None:
             question_id = m.group(2)
             # stores present answer
-            self.cur.execute("INSERT INTO answer (answer, responder_id, question_id) VALUES (%s, %s, %s)",
+            self.cur.execute("INSERT INTO answer (answer, responder_id, question_id) VALUES (%s, %s, %s);",
                              (answer, sender_id, question_id))
+            self.cur.execute("INSERT INTO users (user_id) VALUES (%s);", (str(sender_id),))
+            self.event_handler.new_answer(question_id, answer, sender_id)
         else:
             self.stored_answer = False
 
