@@ -19,13 +19,13 @@ The bot page is:
 - [x] Create a database backend
 - [x] Store question and answer in the database
 - [x] Add Question Answer interface. Create the link
-- [ ] Don't allow people to answer questions, they did not ask. 
+- [ ] Don't allow people to answer questions, they did not ask.
 - [x] Send a question (which the asker has not verified yet), to users asking for their response.
 - [x] Send the stored response to the question to the person who asked the question
 - [ ] Find duplicate question, and only store unique ones.
-- [ ] Add feedback functionality to the response of users.
+- [x] Add feedback functionality to the response of users.
 - [ ] Add rank to the users. Promoting responses of users with most upvotes.
   - [ ] Try making it probabilistic.
 - [ ] Give each user, its statistics, like:
-  - [ ] Let a user know, what is their trust factor
+  - [ ] Let a user know, what is their karma score.
   - [ ] Let a user know, where they rank w.r.t. other users who answer questions.

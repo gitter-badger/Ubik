@@ -21,7 +21,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-from utils.reply import send_message
+
+from utils.reply import send_message, get_feedback
 import random
 from utils.log import log
 
@@ -94,6 +95,7 @@ class Event:
         answer_message = "[Answer]\n {0}".format(answer)
         send_message(int(asker_id), respond_message)
         send_message(int(asker_id), answer_message)
+        get_feedback(int(asker_id), int(sender_id), question)
 
     def ask_answer(self):
         """
@@ -103,8 +105,15 @@ class Event:
         """
         pass
 
-    def post_feedback(self, feedback_type):
-        pass
+    def post_feedback(self, feedback_payload, user_handler):
+        points, rating, answerer_id, question = [x.strip() for x in feedback_payload.split(',')]
+        karma = user_handler.update_karma(int(points), answerer_id)
+        # send karma info to the answerer
+        if user_handler.karma_updated():
+            respond_message = "Hey dude, someone rated you ({0}), for Question: {1}. Your current karma point is: {2}".format(rating, question, karma)
+            send_message(int(answerer_id), respond_message)
+
+        return user_handler.fetch_response()
 
     '''
     def remind_to_answer(self):

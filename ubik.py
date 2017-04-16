@@ -79,6 +79,9 @@ def webhook():
                         sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                         recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                         message_text = messaging_event["message"]["text"]  # the message's text
+                        if messaging_event.get("message").get("quick_reply"):
+                            feedback_payload = messaging_event["message"]["quick_reply"]["payload"]
+                            handle_message(feedback_payload, sender_id, type= "feedback")
                         handle_message(message_text, sender_id)
                     if messaging_event.get("delivery"):  # delivery confirmation
                         pass
@@ -96,21 +99,27 @@ def webhook():
             return 'Error, wrong validation token', 403
 
 
-def handle_message(message_text, sender_id):
+def handle_message(payload, sender_id, type="non-feedback"):
     """
 
     :param message_text:
     :param sender_id:
     :return:
     """
-    if message_text.startswith('[Question]'):
-        question_handler.add_question(message_text, sender_id)
-        response_text = question_handler.fetch_response()
-    elif message_text.startswith('[Answer]'):
-        answer_handler.add_answer(message_text, sender_id)
-        response_text = answer_handler.fetch_response()
+    if type == "non-feedback":
+        if payload.startswith('[Question]'):
+            question_handler.add_question(payload, sender_id)
+            response_text = question_handler.fetch_response()
+        elif payload.startswith('[Answer]'):
+            answer_handler.add_answer(payload, sender_id)
+            response_text = answer_handler.fetch_response()
+        else:
+            response_text = "Hi, I am Ubik. You can ask me your question."
+    elif type == "feedback":
+        response_text = event_handler.post_feedback(payload, user_handler)
     else:
-        response_text = "Hi, I am Ubik. You can ask me your question."
+        log("invalid message type")
+
     send_message(sender_id, response_text)
 
 if __name__ == '__main__':

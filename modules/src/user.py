@@ -20,8 +20,9 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-"""
 
+"""
+from utils.log import log
 
 class User:
     def __init__(self, db, event_handler):
@@ -30,4 +31,30 @@ class User:
         :param db:
         """
         self.db = db
+        self.cur = db.get_cursor()
         self.event_handler = event_handler
+        self.stored_karma = True
+
+    def update_karma(self, points, user_id):
+        try:
+            self.cur.execute("SELECT karma from users WHERE user_id=%s;", (user_id,))
+            new_karma = int(self.cur.fetchone()[0]) + points
+            self.cur.execute("UPDATE users SET karma=%s WHERE user_id=%s", (new_karma, user_id))
+            return new_karma
+        except:
+            log("karma update failed")
+            self.stored_karma = False
+
+    def fetch_response(self):
+        """
+
+        :return:
+        """
+        if self.stored_karma:
+            return "Thanks for your feedback. Your feedback has been saved, and the person who answered will be notified."
+        else:
+            self.stored_karma = True
+            return "Dang, our servers crashed. Lolzz. Finally something more than my brain can explode. Delicious tiny brain."
+
+    def karma_updated(self):
+        return self.stored_karma
