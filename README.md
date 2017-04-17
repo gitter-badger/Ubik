@@ -31,9 +31,9 @@ The bot page is:
   - [x] Let a user know, where they rank w.r.t. other users who answer questions.
 - [ ] Allow users to pause subscription with loss of karma point per day. - required separate thread
 - [ ] Integrate with wit.ai, for NLP.
-- [ ] Beautify the Messenger Interface.
+- [x] Beautify the Messenger Interface.
 - [ ] Add test cases
 - [ ] Add Continuous Integration
 - [ ] Add code coverage
 - [ ] Complete documentation
-- [ ] Deploy on heroku 
+- [x] Deploy on heroku 
