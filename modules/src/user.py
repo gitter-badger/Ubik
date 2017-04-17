@@ -72,4 +72,4 @@ class User:
             else:
                 return "Your karma score is:{0}\nYour karma score is above {1} percent of other users".format(karma, percentile_standing)
         except:
-            return "Dang, our servers crashed. Lolzz. Finally something more than my brain can explode. Delicious tiny brain."
+            return "Sorry, we don't have ranking for you. Ask a question first."
