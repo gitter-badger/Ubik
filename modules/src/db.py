@@ -41,7 +41,7 @@ class Database:
                 format(dbname, dbuser, dbhost, dbport, dbpass))
             self.conn.autocommit = True
         except:
-            log("I am unable to connect to the database.")
+            log("I am unable to connect to the database. Credentials are\ndbname='{0}' user='{1}' host='{2}' port='{3}' password='{4}'".format(dbname, dbuser, dbhost, dbport, dbpass))
 
     def connected(self):
         """
