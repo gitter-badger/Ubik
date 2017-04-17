@@ -34,12 +34,10 @@ from modules.src.user import User
 from modules.src.event import Event
 
 VERIFY_TOKEN = os.environ.get('VERIFY_TOKEN', config.VERIFY_TOKEN)
-DATABASE_NAME = os.environ.get('DATABASE_NAME', config.DATABASE_NAME)
-DATABASE_USER = os.environ.get('DATABASE_USER', config.DATABASE_USER)
-DATABASE_PASS = os.environ.get('DATABASE_PASS', config.DATABASE_PASS)
+DATABASE_URL = os.environ.get('DATABASE_URL', config.DATABASE_URL)
 
 app = Flask(__name__)
-db = Database(DATABASE_NAME, DATABASE_USER, DATABASE_PASS)
+db = Database(DATABASE_URL)
 event_handler = Event(db)
 question_handler = Question(db, event_handler)
 answer_handler = Answer(db, event_handler)

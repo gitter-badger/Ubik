@@ -24,21 +24,21 @@ SOFTWARE.
 
 import psycopg2
 from utils.log import *
+from utils.database_parser import parse_database
 
 
 class Database:
-    def __init__(self, dbname, dbuser, dbpass):
+    def __init__(self, dburl):
         """
 
-        :param dbname:
-        :param dbuser:
-        :param dbpass:
+        :param dburl:
         """
         self.conn = None
+        dbname, dbpass, dbhost, dbport, dbuser = parse_database(dburl)
         try:
             self.conn=psycopg2.connect(
-                "dbname='{0}' user='{1}' host='localhost' password='{2}'".
-                format(dbname, dbuser, dbpass))
+                "dbname='{0}' user='{1}' host='{2}' port='{3}' password='{4}'".
+                format(dbname, dbuser, dbhost, dbport, dbpass))
             self.conn.autocommit = True
         except:
             log("I am unable to connect to the database.")
