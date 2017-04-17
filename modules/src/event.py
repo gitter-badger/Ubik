@@ -43,7 +43,7 @@ class Event:
         Triggered when a new question is asked.
         Response: If number of users = 1, do nothing
                                      = 2, send question to the non-asker
-                                     = 2+, send question to (n - 1)/2 non-askers
+                                     = 2+, send question to (n)/2 non-askers, where n = # non askers
 
         :param question_id:
 
@@ -62,7 +62,7 @@ class Event:
             send_message(int(non_askers[0]), request_message)
             send_message(int(non_askers[0]), question_message)
         else:
-            chosen_non_askers = random.sample(non_askers, (len(non_askers) - 1) / 2)
+            chosen_non_askers = random.sample(non_askers, (len(non_askers)) / 2)
             for recipient in chosen_non_askers:
                 send_message(int(recipient), request_message)
                 send_message(int(recipient), question_message)
