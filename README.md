@@ -24,8 +24,16 @@ The bot page is:
 - [x] Send the stored response to the question to the person who asked the question
 - [ ] Find duplicate question, and only store unique ones.
 - [x] Add feedback functionality to the response of users.
-- [ ] Add rank to the users. Promoting responses of users with most upvotes.
+- [ ] Add rank to the users. Promoting responses of users with most up-votes - requires separate thread
   - [ ] Try making it probabilistic.
 - [x] Give each user, its statistics, like:
   - [x] Let a user know, what is their karma score.
   - [x] Let a user know, where they rank w.r.t. other users who answer questions.
+- [ ] Allow users to pause subscription with loss of karma point per day. - required separate thread
+- [ ] Integrate with wit.ai, for NLP.
+- [ ] Beautify the Messenger Interface.
+- [ ] Add test cases
+- [ ] Add Continuous Integration
+- [ ] Add code coverage
+- [ ] Complete documentation
+- [ ] Deploy on heroku 

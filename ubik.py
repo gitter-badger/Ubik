@@ -82,7 +82,8 @@ def webhook():
                         if messaging_event.get("message").get("quick_reply"):
                             feedback_payload = messaging_event["message"]["quick_reply"]["payload"]
                             handle_message(feedback_payload, sender_id, type= "feedback")
-                        handle_message(message_text, sender_id)
+                        else:
+                            handle_message(message_text, sender_id)
                     if messaging_event.get("delivery"):  # delivery confirmation
                         pass
                     if messaging_event.get("optin"):  # optin confirmation
@@ -107,20 +108,43 @@ def handle_message(payload, sender_id, type="non-feedback"):
     :return:
     """
     if type == "non-feedback":
-        if payload.startswith('[Question]'):
+        if payload == "about ubik":
+            response_text = "Hi! I am Ubik.\n\nI am your personal Q&A (Question and Answer) bot. "\
+                "I will get the best people to answer your questions." \
+                " Ask anything sensible. But please [PLEASE] don't include any personal details, "\
+                "as they will be delivered as it is to all users getting an A2A.\n" \
+                "This is an anonymous Q&A platform, built on confidence." \
+                " If you ask indecent questions or give inappropriate answers you will get substantial hit "\
+                "to your karma score and may lose your access to my service. We get feedback on your questions and"\
+                " answers and closely monitor them.\n"
+        elif payload == "help":
+            response_text = "1. To ask a question\n[Question] <Question Text> \n\n" \
+                "Example:\n[Question] Who is Ubik ?\n" \
+                "------------------------------\n\n" \
+                "2. To give an answer\n[Answer][qid:<question id (qid)>] <Answer Text>\n\n" \
+                "Example:\n[Answer][qid:1] Ubik is a Zombie who is getting younger by getting you answers " \
+                "to your questions\n" \
+                "------------------------------\n\n" \
+                "3. For longer questions and answers (above 640 chars), use text pasting sites like\n"\
+                " https://justpaste.it/ \n"\
+                "and paste link at <Question Text> and <Answer Text> placeholder respectively."
+        elif payload.startswith('[Question]'):
             question_handler.add_question(payload, sender_id)
             response_text = question_handler.fetch_response()
         elif payload.startswith('[Answer]'):
             answer_handler.add_answer(payload, sender_id)
             response_text = answer_handler.fetch_response()
-        elif payload == '[Statistics]':
+        elif payload == 'ranking':
             response_text = user_handler.get_user_statistics(sender_id)
         else:
-            response_text = "Hi, I am Ubik. You can ask me your question."
+            response_text = "Hi, I am Ubik. You can ask me your question.\n"\
+                    "Type 'about ubik' for knowing about me.\n"\
+                    "Type 'help' for details on how to use me.\n"\
+                    "Type 'ranking' for knowing your karma score."
     elif type == "feedback":
         response_text = event_handler.post_feedback(payload, user_handler)
     else:
-        log("invalid message type")
+        response_text = "invalid message type"
 
     send_message(sender_id, response_text)
 

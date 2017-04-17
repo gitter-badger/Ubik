@@ -25,6 +25,7 @@ SOFTWARE.
 from utils.reply import send_message, get_feedback
 import random
 from utils.log import log
+from utils.slaves import UbikThread
 
 class Event:
     def __init__(self, db):
@@ -97,13 +98,15 @@ class Event:
         send_message(int(asker_id), answer_message)
         get_feedback(int(asker_id), int(sender_id), question)
 
-    def ask_answer(self):
+    def ask_answer(self, threads):
         """
         Triggered periodically, asking for an answer.
 
         :return:
         """
-        pass
+        asker_thread = UbikThread(1, 'asker')
+        asker_thread.start()
+        return asker_thread
 
     def post_feedback(self, feedback_payload, user_handler):
         points, rating, answerer_id, question = [x.strip() for x in feedback_payload.split(',')]
