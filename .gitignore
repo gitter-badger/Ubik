@@ -1,11 +1,9 @@
-# ignore config file
-config.py
-
 # ignore server io
 ngrok
 
 # ignore virtualenv directory
 ubik/
+ubik-heroku/
 
 # ignore pycharm
 .idea/
