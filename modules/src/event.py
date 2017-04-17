@@ -25,6 +25,7 @@ SOFTWARE.
 from utils.reply import send_message, get_feedback
 import random
 from utils.slaves import UbikThread
+from utils.log import log
 
 class Event:
     def __init__(self, db):
@@ -58,14 +59,18 @@ class Event:
 
         request_message = "Can you answer this question? coz I can't as I don't have brains "
         question_message = "[Question][qid:{0}] {1}".format(question_id, question)
-        if len(non_askers) == 1:
-            send_message(int(non_askers[0]), request_message)
-            send_message(int(non_askers[0]), question_message)
-        else:
-            chosen_non_askers = random.sample(non_askers, (len(non_askers)) / 2)
-            for recipient in chosen_non_askers:
-                send_message(int(recipient), request_message)
-                send_message(int(recipient), question_message)
+
+        try:
+            if len(non_askers) == 1:
+                send_message(int(non_askers[0]), request_message)
+                send_message(int(non_askers[0]), question_message)
+            else:
+                chosen_non_askers = random.sample(non_askers, (len(non_askers)) / 2)
+                for recipient in chosen_non_askers:
+                    send_message(int(recipient), request_message)
+                    send_message(int(recipient), question_message)
+        except:
+            log("Failed sending question to users")
 
     def new_answer(self, question_id, answer, sender_id):
         """
@@ -91,11 +96,14 @@ class Event:
         if asker_id == sender_id:
             return
 
-        respond_message = "Here is the answer to your question\n{0}".format(question)
-        answer_message = "[Answer]\n {0}".format(answer)
-        send_message(int(asker_id), respond_message)
-        send_message(int(asker_id), answer_message)
-        get_feedback(int(asker_id), int(sender_id), question)
+        try:
+            respond_message = "Here is the answer to your question\n{0}".format(question)
+            answer_message = "[Answer]\n {0}".format(answer)
+            send_message(int(asker_id), respond_message)
+            send_message(int(asker_id), answer_message)
+            get_feedback(int(asker_id), int(sender_id), question)
+        except:
+            log("Failed sending answer to asker")
 
     def ask_answer(self, threads):
         """
@@ -111,9 +119,12 @@ class Event:
         points, rating, answerer_id, question = [x.strip() for x in feedback_payload.split(',')]
         karma = user_handler.update_karma(int(points), answerer_id)
         # send karma info to the answerer
-        if user_handler.karma_updated():
-            respond_message = "Hey dude, someone rated you ({0}), for Question: {1}. Your current karma point is: {2}".format(rating, question, karma)
-            send_message(int(answerer_id), respond_message)
+        try:
+            if user_handler.karma_updated():
+                respond_message = "Hey dude, someone rated you ({0}), for Question: {1}. Your current karma point is: {2}".format(rating, question, karma)
+                send_message(int(answerer_id), respond_message)
+        except:
+            log("failed sending feedback response to responder")
 
         return user_handler.fetch_response()
 

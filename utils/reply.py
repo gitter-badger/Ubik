@@ -94,3 +94,7 @@ def get_feedback(asker_id, responder_id, question):
     if r.status_code != 200:
         log(r.status_code)
         log(r.text)
+
+
+def is_ascii(s):
+    return all(ord(c) < 128 for c in s)

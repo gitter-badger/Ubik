@@ -106,7 +106,7 @@ def handle_message(payload, sender_id, type="non-feedback"):
     :return:
     """
     if type == "non-feedback":
-        if payload == "about ubik":
+        if payload.lower() == "about ubik":
             response_text = "Hi! I am Ubik.\n\nI am your personal Q&A (Question and Answer) bot. "\
                 "I will get the best people to answer your questions." \
                 " Ask anything sensible. But please [PLEASE] don't include any personal details, "\
@@ -115,7 +115,7 @@ def handle_message(payload, sender_id, type="non-feedback"):
                 " If you ask indecent questions or give inappropriate answers you will get substantial hit "\
                 "to your karma score and may lose your access to my service. We get feedback on your questions and"\
                 " answers and closely monitor them.\n"
-        elif payload == "help":
+        elif payload.lower() == "help":
             response_text = "1. To ask a question\n[Question] <Question Text> \n\n" \
                 "Example:\n[Question] Who is Ubik ?\n" \
                 "------------------------------\n\n" \
@@ -132,7 +132,7 @@ def handle_message(payload, sender_id, type="non-feedback"):
         elif payload.startswith('[Answer]'):
             answer_handler.add_answer(payload, sender_id)
             response_text = answer_handler.fetch_response()
-        elif payload == 'ranking':
+        elif payload.lower() == 'ranking':
             response_text = user_handler.get_user_statistics(sender_id)
         else:
             response_text = "Hi, I am Ubik. You can ask me your question.\n"\
