@@ -34,7 +34,7 @@ class Database:
         :param dburl:
         """
         self.conn = None
-        dbname, dbpass, dbhost, dbport, dbuser = parse_database(dburl)
+        dbuser, dbpass, dbhost, dbport, dbname = parse_database(dburl)
         try:
             self.conn=psycopg2.connect(
                 "dbname='{0}' user='{1}' host='{2}' port='{3}' password='{4}'".
