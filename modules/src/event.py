@@ -24,7 +24,6 @@ SOFTWARE.
 
 from utils.reply import send_message, get_feedback
 import random
-from utils.log import log
 from utils.slaves import UbikThread
 
 class Event:
