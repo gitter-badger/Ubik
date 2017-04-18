@@ -97,3 +97,26 @@ class User:
                 return "Your karma score is:{0}\nYour karma score is above {1} percent of other users".format(karma, percentile_standing)
         except:
             return "Sorry, we don't have ranking for you. Ask a question first."
+
+    def update_subscription(self, user_id, flag):
+        """
+        Update the subscription status of the users.
+
+        :param user_id: Facebook id of the user whose subscription status is to be updated.
+        :param flag: True, means subscription should be made active, False, means subscription should be made inactive.
+        :return: Feedback for the subscription update.
+        """
+        try:
+            self.cur.execute("UPDATE users SET subscription=%s WHERE user_id=%s", (flag, user_id))
+            if flag:
+                return "Welcome back! Your subscription has been restarted. Best of luck answering questions."
+            else:
+                return "Your subscription has been paused. \n"\
+                       "For each day your subscription is inactive, you lose 10 karma points"
+        except:
+            log("subscription update failed")
+            return "We were unable to update your subscription. We are working to fix this up. Sorry, says the Zombie."
+
+
+
+

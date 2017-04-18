@@ -27,6 +27,7 @@ import random
 from utils.slaves import UbikThread
 from utils.log import log
 
+
 class Event:
     def __init__(self, db):
         """
@@ -49,7 +50,7 @@ class Event:
         """
         self.cur.execute("SELECT asker_id, question FROM question WHERE question_id=%s;", (question_id,))
         asker_id, question = self.cur.fetchone()
-        self.cur.execute("SELECT user_id FROM users WHERE user_id != %s;", (asker_id,))
+        self.cur.execute("SELECT user_id FROM users WHERE (user_id <> %s AND subscription=TRUE);", (asker_id,))
         non_askers = [x[0] for x in self.cur.fetchall()]
         if not non_askers:
             return
@@ -89,7 +90,7 @@ class Event:
             return
 
         try:
-            respond_message = "Here is the answer to your question\n{0}".format(question)
+            respond_message = "Here is the answer to your question\nQuestion:{0}".format(question)
             answer_message = "[Answer]\n {0}".format(answer)
             send_message(int(asker_id), respond_message)
             send_message(int(asker_id), answer_message)
@@ -120,12 +121,34 @@ class Event:
         # send karma info to the answerer
         try:
             if user_handler.karma_updated():
-                respond_message = "Hey dude, someone rated you ({0}), for Question: {1}. Your current karma point is: {2}".format(rating, question, karma)
+                respond_message = \
+                    "Hey dude, someone rated you ({0}), for Question: {1}. Your current karma point is: {2}".\
+                    format(rating, question, karma)
                 send_message(int(answerer_id), respond_message)
         except:
             log("failed sending feedback response to responder")
 
         return user_handler.fetch_response()
+
+    def pause_subscription(self, user_id, user_handler):
+        """
+        Pauses subscription, and sends feedback
+
+        :param user_id: User id of the user whose subscription is to be paused.
+        :param user_handler: User handler
+        :return: Feedback of the pause subscription request.
+        """
+        return user_handler.update_subscription(False, user_id)
+
+    def restart_subscription(self, user_id, user_handler):
+        """
+        Restarts subscription, and sends feedback
+
+        :param: user_id: User id of the user whos subscription is to be restarted.
+        :param: user_handler: User handler
+        :return: Feedback of the restore subscription request.
+        """
+        return user_handler.update_subscription(True, user_id)
 
     '''
     def remind_to_answer(self):
