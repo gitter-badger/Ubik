@@ -28,37 +28,43 @@ import re
 class Answer:
     def __init__(self, db, event_handler):
         """
+        Handles answers posted to the Ubik platform.
 
-        :param db:
+        :param db: object for Postgres database.
         """
         self.db = db
         self.cur = db.get_cursor()
         self.event_handler = event_handler
         self.stored_answer = True
 
-    def add_answer(self, text, sender_id):
+    def add_answer(self, text, responder_id):
         """
+        Adds the answer for the corresponding question to the database.
 
-        :param text:
-        :param sender_id:
-        :return:
+        :param text: The text for the answer
+        :param responder_id: The id of the person who answered the question
+        :return: None
         """
         answer = text.split('[Answer]')[1].strip()
         m = re.search('\[(qid):([0-9]*)\]', answer)
         if m is not None:
             question_id = m.group(2)
             # stores present answer
-            self.cur.execute("INSERT INTO answer (answer, responder_id, question_id) VALUES (%s, %s, %s);",
-                             (answer, sender_id, question_id))
-            self.cur.execute("INSERT INTO users (user_id) SELECT (%s) WHERE NOT EXISTS (SELECT * FROM users WHERE user_id=%s);", (str(sender_id),str(sender_id)))
-            self.event_handler.new_answer(question_id, answer, sender_id)
+            self.cur.execute(
+                "INSERT INTO answer (answer, responder_id, question_id) VALUES (%s, %s, %s);",
+                (answer, responder_id, question_id))
+            self.cur.execute(
+                "INSERT INTO users (user_id) SELECT (%s) WHERE NOT EXISTS (SELECT * FROM users WHERE user_id=%s);",
+                (str(responder_id), str(responder_id)))
+            self.event_handler.new_answer(question_id, answer, responder_id)
         else:
             self.stored_answer = False
 
     def fetch_response(self):
         """
+        Sends a immediate feedback, explaining, if the answer was saved or not.
 
-        :return:
+        :return: Feedback text.
         """
         if self.stored_answer:
             return "Thanks for your answer. Your answer has been saved. "\

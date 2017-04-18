@@ -13,12 +13,14 @@ headers = {
     "Content-Type": "application/json"
 }
 
+
 def send_message(recipient_id, message_text):
     """
+    Sends the messaged_text to recipient with given recipient_id
 
-    :param recipient_id:
-    :param message_text:
-    :return:
+    :param recipient_id: unique facebook id of the user, to whom the message is to be sent.
+    :param message_text: The message to be sent to the recipient.
+    :return: None
     """
     log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
 
@@ -38,9 +40,11 @@ def send_message(recipient_id, message_text):
 
 def get_feedback(asker_id, responder_id, question):
     """
+    Post a quick reply for askers to rate the users for answers they got.
 
-    :param recipient_id:
-    :return:
+    :param asker_id: unique facebook id of the asker.
+    :param responder_id: unique facebook id of the person qho answered asker's question.
+    :return: None
     """
     log("sending feedback callback message to {recipient}".format(recipient=asker_id))
 
@@ -97,4 +101,10 @@ def get_feedback(asker_id, responder_id, question):
 
 
 def is_ascii(s):
+    """
+    Checks if the string (s) has any non-askii character.
+
+    :param s: The string which is checked
+    :return: True, is the string consists of all ascii characters, else returns False.
+    """
     return all(ord(c) < 128 for c in s)

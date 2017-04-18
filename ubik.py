@@ -48,8 +48,9 @@ user_handler = User(db, event_handler)
 @app.route('/')
 def info():
     """
+    Displays on the website of the page. @TODO - Add index.html for the site of Ubik.
 
-    :return:
+    :return: response for each get request on '/'.
     """
     return "Hi! I am Ubik. I will get the best people to answer your questions." \
         " Ask anything sensible. Also please don't include any personal details." \
@@ -62,8 +63,9 @@ def info():
 @app.route('/webhook/', methods=['GET', 'POST'])
 def webhook():
     """
+    Triggers on each GET and POST request. Handles GET and POST requests using this function.
 
-    :return:
+    :return: Return status code acknowledge for the GET and POST request
     """
     if request.method == 'POST':
         data = request.get_json(force=True)
@@ -100,10 +102,11 @@ def webhook():
 
 def handle_message(payload, sender_id, type="non-feedback"):
     """
+    Handles payload, and redirect them to proper handler.
 
-    :param message_text:
-    :param sender_id:
-    :return:
+    :param payload: Message (or Quick Reply) payload
+    :param sender_id: The unique facebook user id of the person who sent the payload
+    :return: None
     """
     if type == "non-feedback":
         if payload.lower() == "about ubik":

@@ -25,11 +25,14 @@ SOFTWARE.
 from utils.log import log
 from utils.mathematics import percentile
 
+
 class User:
     def __init__(self, db, event_handler):
         """
+        Handles user statistics.
 
-        :param db:
+        :param db: object for Postgres database.
+        :param event_handler: object for handling event triggers.
         """
         self.db = db
         self.cur = db.get_cursor()
@@ -37,6 +40,13 @@ class User:
         self.stored_karma = True
 
     def update_karma(self, points, user_id):
+        """
+        Updates karma points of the users.
+
+        :param points: Karma points to be added to the user.
+        :param user_id: The unique facebook id of the user, whose karma is to be updated.
+        :return: None
+        """
         try:
             self.cur.execute("SELECT karma from users WHERE user_id=%s;", (user_id,))
             new_karma = int(self.cur.fetchone()[0]) + points
@@ -48,19 +58,33 @@ class User:
 
     def fetch_response(self):
         """
+        fetches response to the feedback posted by the asker. Depends on the fact, that the karma was updated or not.
 
-        :return:
+        :return: None
         """
         if self.stored_karma:
-            return "Thanks for your feedback. Your feedback has been saved, and the person who answered will be notified."
+            return "Thanks for your feedback. Your feedback has been saved, "\
+                   "and the person who answered will be notified."
         else:
             self.stored_karma = True
-            return "Dang, our servers crashed. Lolzz. Finally something more than my brain can explode. Delicious tiny brain."
+            return "Dang, our servers crashed. Lolzz. Finally something more than"\
+                   " my brain can explode. Delicious tiny brain."
 
     def karma_updated(self):
+        """
+        Returns True, if the karma was updated. Else returns false.
+
+        :return: True, if the karma was updated. Else returns false.
+        """
         return self.stored_karma
 
     def get_user_statistics(self, user_id):
+        """
+        Obtain the user statistics like karma points, and percentile ranking of the users.
+
+        :param user_id: The unique facebook id of the user whose statistics is requested.
+        :return: Text with statistics embedded in it.
+        """
         try:
             self.cur.execute("SELECT karma from users WHERE user_id=%s;", (user_id,))
             karma = int(self.cur.fetchone()[0])

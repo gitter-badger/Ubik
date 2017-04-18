@@ -37,3 +37,5 @@ The bot page is:
 - [ ] Add code coverage
 - [ ] Complete documentation
 - [x] Deploy on heroku 
+- [ ] Make try and catch more explicit around send_messages
+- [ ] Make answer feedback, and feedback quick reply atomic. 

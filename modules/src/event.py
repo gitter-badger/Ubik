@@ -30,11 +30,9 @@ from utils.log import log
 class Event:
     def __init__(self, db):
         """
+        Event handler for handling event tiggers like Question being asked, Answer being given, feedback being posted.
 
-        :param db:
-        :param question_handler:
-        :param answer_handler:
-        :param user_handler:
+        :param db: object for Postgres database.
         """
         self.db = db
         self.cur = db.get_cursor()
@@ -46,9 +44,8 @@ class Event:
                                      = 2, send question to the non-asker
                                      = 2+, send question to (n)/2 non-askers, where n = # non askers
 
-        :param question_id:
-
-        :return:
+        :param question_id: The unique id of the question that was posted.
+        :return: None
         """
         self.cur.execute("SELECT asker_id, question FROM question WHERE question_id=%s;", (question_id,))
         asker_id, question = self.cur.fetchone()
@@ -78,15 +75,10 @@ class Event:
         Response: If has_answer = True, do nothing (as user is satisfied)
                                 else, send asker the answer, and ask if he is satisfied.
 
-        :param question_id:
-        :param answer:
-        :param sender_id:
-        :return:
-        """
-        """
-        Triggered when a new answer is given.
-
-        :return:
+        :param question_id: The unique id of the question that was answered.
+        :param answer: Answer Text
+        :param sender_id: The user id of the person who answered the question.
+        :return: None
         """
         self.cur.execute("SELECT asker_id, question, has_answer FROM question WHERE question_id=%s;", (question_id,))
         asker_id, question, has_answer = self.cur.fetchone()
@@ -116,6 +108,13 @@ class Event:
         return asker_thread
 
     def post_feedback(self, feedback_payload, user_handler):
+        """
+        Sends feedback of the question asker, to the person who answered the question.
+
+        :param feedback_payload: The feedback string containing karma points, feedback rating, answerer_id, and question
+        :param user_handler: object for handling users in user table.
+        :return:
+        """
         points, rating, answerer_id, question = [x.strip() for x in feedback_payload.split(',')]
         karma = user_handler.update_karma(int(points), answerer_id)
         # send karma info to the answerer

@@ -26,35 +26,41 @@ SOFTWARE.
 class Question:
     def __init__(self, db, event_handler):
         """
+        Handles questions posted to the Ubik platform.
 
-        :param db:
+        :param db: object for Postgres database.
         """
         self.db = db
         self.cur = db.get_cursor()
         self.event_handler = event_handler
         self.stored_question = True
 
-    def add_question(self, text, sender_id):
+    def add_question(self, text, asker_id):
         """
+        Adds the question to the database
 
-        :param text:
-        :param sender_id:
-        :return:
+        :param text: The test of the question
+        :param asker_id: The person who asked the question
+        :return: None
         """
         question = text.split('[Question]')[1].strip()
         try:
-            self.cur.execute("INSERT INTO question (question, asker_id, has_answer) VALUES (%s, %s, %s) RETURNING question_id;",
-                             (question, str(sender_id), False))
+            self.cur.execute(
+                "INSERT INTO question (question, asker_id, has_answer) VALUES (%s, %s, %s) RETURNING question_id;",
+                (question, str(asker_id), False))
             question_id = self.cur.fetchone()[0]
-            self.cur.execute("INSERT INTO users (user_id) SELECT (%s) WHERE NOT EXISTS (SELECT * FROM users WHERE user_id=%s);", (str(sender_id),str(sender_id)))
+            self.cur.execute(
+                "INSERT INTO users (user_id) SELECT (%s) WHERE NOT EXISTS (SELECT * FROM users WHERE user_id=%s);",
+                (str(asker_id),str(asker_id)))
             self.event_handler.new_question(question_id)
         except:
             self.stored_question = False
 
     def fetch_response(self):
         """
+        Sends a immediate feedback, explaining, if the question was saved or not.
 
-        :return:
+        :return: Feedback message
         """
         if self.stored_question:
             return "Your question has been saved. "\
