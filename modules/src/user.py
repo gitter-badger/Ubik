@@ -107,7 +107,7 @@ class User:
         :return: Feedback for the subscription update.
         """
         try:
-            self.cur.execute("UPDATE users SET subscription=%s WHERE user_id=%s", (flag, user_id))
+            self.cur.execute("UPDATE users SET subscription=%s WHERE user_id=%s;", (flag, user_id))
             if flag:
                 return "Welcome back! Your subscription has been restarted. Best of luck answering questions."
             else:

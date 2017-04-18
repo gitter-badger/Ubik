@@ -138,7 +138,7 @@ class Event:
         :param user_handler: User handler
         :return: Feedback of the pause subscription request.
         """
-        return user_handler.update_subscription(False, user_id)
+        return user_handler.update_subscription(user_id, False)
 
     def restart_subscription(self, user_id, user_handler):
         """
@@ -148,7 +148,7 @@ class Event:
         :param: user_handler: User handler
         :return: Feedback of the restore subscription request.
         """
-        return user_handler.update_subscription(True, user_id)
+        return user_handler.update_subscription(user_id, True)
 
     '''
     def remind_to_answer(self):
