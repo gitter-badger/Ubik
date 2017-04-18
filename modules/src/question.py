@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
+from utils.log import log
 
 
 class Question:
@@ -71,3 +72,13 @@ class Question:
             self.stored_question = True
             return "Sorry, there has been some issue with our server. We are working hard to fix it up. "\
                 "Try again after sometime."
+
+    def mark_question_as_resolved(self, question_id):
+        try:
+            self.cur.execute(
+                "UPDATE question SET has_answer=TRUE WHERE question_id=%s",
+                (question_id,)
+            )
+        except:
+            log("question reolution db update failed")
+

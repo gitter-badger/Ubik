@@ -143,14 +143,14 @@ def handle_message(payload, sender_id, type="non-feedback"):
             response_text = event_handler.restart_subscription(sender_id, user_handler)
         else:
             response_text = "Hi, I am Ubik. You can ask me your question.\n"\
-                    "Type 'about ubik' for knowing about me.\n"\
-                    "Type 'help' for details on how to use me.\n"\
-                    "Type 'ranking' for knowing your karma score.\n" \
-                    "Type 'pause' to pause subscription for questions(Lose 10 karma points per day)\n"\
-                    "Type 'restart' to restart subsciption for questions.\n"
+                    "* Type 'about ubik' for knowing about me.\n"\
+                    "* Type 'help' for details on how to use me.\n"\
+                    "* Type 'ranking' for knowing your karma score.\n" \
+                    "* Type 'pause' to pause subscription(Lose 10 karma pts/day)\n"\
+                    "* Type 'restart' to restart subscription.\n"
 
     elif type == "feedback":
-        response_text = event_handler.post_feedback(payload, user_handler)
+        response_text = event_handler.post_feedback(payload, user_handler, question_handler)
     else:
         response_text = "invalid message type"
 

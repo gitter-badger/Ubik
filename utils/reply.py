@@ -38,12 +38,14 @@ def send_message(recipient_id, message_text):
         log(r.text)
 
 
-def get_feedback(asker_id, responder_id, question):
+def get_feedback(asker_id, responder_id, question_id, question):
     """
     Post a quick reply for askers to rate the users for answers they got.
 
     :param asker_id: unique facebook id of the asker.
     :param responder_id: unique facebook id of the person qho answered asker's question.
+    :param question_id: unique id of the question answered.
+    :param question: question text corresponding to the question_id
     :return: None
     """
     log("sending feedback callback message to {recipient}".format(recipient=asker_id))
@@ -52,43 +54,44 @@ def get_feedback(asker_id, responder_id, question):
         "recipient": {
             "id": asker_id
         },
-        "message":{
-            "text": "Rate the answer: (Marking OOW(Out of World), means you are satisfied, and don't want any more answers)",
+        "message": {
+            "text": "Rate the answer: "
+                    "(Marking OOW(Out of World), means you are satisfied, and don't want any more answers)",
             "quick_replies": [
                 {
                     "content_type": "text",
                     "title": "Vulgar",
-                    "payload": "{0}, {1}, {2}, {3}".format(-20, 'Vulgar', responder_id, question),
+                    "payload": "{0}, {1}, {2}, {3}, {4}".format(-20, 'Vulgar', responder_id, question_id, question),
                 },
                 {
                     "content_type": "text",
                     "title": "Unrelated",
-                    "payload": "{0}, {1}, {2}, {3}".format(-5, 'Unrelated', responder_id, question),
+                    "payload": "{0}, {1}, {2}, {3}, {4}".format(-5, 'Unrelated', responder_id, question_id, question),
                 },
                 {
                     "content_type": "text",
                     "title": "Bad",
-                    "payload": "{0}, {1}, {2}, {3}".format(-10, 'Bad', responder_id, question),
+                    "payload": "{0}, {1}, {2}, {3}, {4}".format(-10, 'Bad', responder_id, question_id, question),
                 },
                 {
                     "content_type": "text",
                     "title": "Average",
-                    "payload": "{0}, {1}, {2}, {3}".format(+1, 'Average', responder_id, question),
+                    "payload": "{0}, {1}, {2}, {3}, {4}".format(+1, 'Average', responder_id, question_id, question),
                 },
                 {
                     "content_type": "text",
                     "title": "Good",
-                    "payload": "{0}, {1}, {2}, {3}".format(+10, 'Good', responder_id, question),
+                    "payload": "{0}, {1}, {2}, {3}, {4}".format(+10, 'Good', responder_id, question_id, question),
                 },
                 {
                     "content_type": "text",
                     "title": "Best",
-                    "payload": "{0}, {1}, {2}, {3}".format(+20, 'Best', responder_id, question),
+                    "payload": "{0}, {1}, {2}, {3}, {4}".format(+20, 'Best', responder_id, question_id, question),
                 },
                 {
                     "content_type": "text",
                     "title": "OOW",
-                    "payload": "{0}, {1}, {2}, {3}".format(+100, 'OOW', responder_id, question),
+                    "payload": "{0}, {1}, {2}, {3}, {4}".format(+100, 'OOW', responder_id, question_id, question),
                 }
             ]
         }

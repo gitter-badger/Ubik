@@ -29,7 +29,7 @@ The bot page is:
 - [x] Give each user, its statistics, like:
   - [x] Let a user know, what is their karma score.
   - [x] Let a user know, where they rank w.r.t. other users who answer questions.
-- [ ] Allow users to pause subscription with loss of karma point per day. - required separate thread
+- [x] Allow users to pause and restart subscription with loss of karma point per day.
 - [ ] Integrate with wit.ai, for NLP.
 - [x] Beautify the Messenger Interface.
 - [ ] Add test cases
