@@ -49,7 +49,7 @@ class Answer:
         m = re.search('\[(qid):([0-9]*)\]', answer)
         if m is not None:
             question_id = m.group(2)
-            answer_text = answer.split('[qid]:{0}]'.format(question_id))[1].strip()
+            answer_text = answer.split('[qid:{0}]'.format(question_id)[1].strip()
             # stores present answer
             self.cur.execute(
                 "INSERT INTO answer (answer, responder_id, question_id) VALUES (%s, %s, %s);",
